@@ -1,184 +1,81 @@
-
 <!DOCTYPE html>
 <html lang="bn">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KJC TV | Kusharpara Junior Club</title>
-    <!-- প্রফেশনাল লুকের জন্য ফন্ট এবং আইকন প্যাক -->
-    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+    <title>KJC TV Live</title>
     <style>
-        :root {
-            --bg-color: #0c111b;
-            --card-bg: #192133;
-            --primary-blue: #0066cc;
-            --accent-gold: #ffcc00;
-            --text-color: #ffffff;
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Hind Siliguri', sans-serif; }
-        body { background-color: var(--bg-color); color: var(--text-color); padding-bottom: 30px; }
-        
-        /* হেডার ও ব্র্যান্ডিং */
-        header {
-            background: linear-gradient(to bottom, rgba(0,0,0,0.9), rgba(0,0,0,0));
-            padding: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky; top: 0; z-index: 100;
-        }
-        .logo-area h1 { font-size: 24px; color: var(--primary-blue); font-weight: 700; text-shadow: 0 0 10px rgba(0,102,204,0.5); }
-        .logo-area span { color: var(--accent-gold); }
-        .club-info { font-size: 12px; color: #8f98a9; text-align: right; }
-
-        /* ব্যানার স্লাইডার */
-        .hero-banner {
-            width: 92%; margin: 15px auto; height: 180px;
-            background: linear-gradient(to right, rgba(12,17,27,0.9), rgba(12,17,27,0.2)), url('https://images.unsplash.com/photo-1594909122845-11baa439b7bf?auto=format&fit=crop&w=800&q=80');
-            background-size: cover; background-position: center;
-            border-radius: 12px; padding: 20px;
-            display: flex; flex-direction: column; justify-content: center;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
-        }
-        .hero-banner h2 { font-size: 22px; margin-bottom: 5px; color: var(--accent-gold); }
-        .hero-banner p { font-size: 13px; color: #cbd5e1; max-width: 80%; }
-
-        /* সেকশন টাইটেল */
-        .section-title { width: 92%; margin: 25px auto 12px auto; font-size: 18px; display: flex; align-items: center; gap: 8px; border-left: 4px solid var(--primary-blue); padding-left: 8px; }
-
-        /* গ্রিড লেআউট */
-        .grid-container { width: 92%; margin: 0 auto; display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
-        
-        /* ওটিটি কার্ড ডিজাইন */
-        .media-card {
-            background-color: var(--card-bg); border-radius: 10px; overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3); transition: transform 0.2s;
-            position: relative; border: 1px solid rgba(255,255,255,0.05);
-        }
-        .media-card:active { transform: scale(0.97); }
-        .thumbnail-box { width: 100%; height: 110px; background-color: #000; position: relative; }
-        .thumbnail-box img { width: 100%; height: 100%; object-fit: cover; }
-        .live-badge { position: absolute; top: 8px; left: 8px; background-color: #ff0033; color: white; font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: bold; animation: blink 1.5s infinite; }
-        @keyframes blink { 0% {opacity: 1;} 50% {opacity: 0.4;} 100% {opacity: 1;} }
-        
-        .play-btn-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.3); font-size: 28px; color: rgba(255,255,255,0.8); }
-        .card-details { padding: 10px; }
-        .card-title { font-size: 14px; font-weight: 600; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .card-subtitle { font-size: 11px; color: #8f98a9; margin-top: 2px; }
-
-        /* লাইভ প্লেয়ার মোডাল (পপআপ) */
-        .player-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 999; justify-content: center; align-items: center; flex-direction: column; }
-        .player-box { width: 95%; max-width: 700px; background: #000; border-radius: 8px; overflow: hidden; position: relative; }
-        .video-container { position: relative; padding-bottom: 56.25%; height: 0; }
-        .video-container iframe, .video-container video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
-        .close-player { margin-top: 15px; background: var(--primary-blue); color: #fff; border: none; padding: 8px 25px; border-radius: 20px; font-weight: bold; font-size: 14px; }
+        body { background-color: #0d131a; color: white; font-family: Arial, sans-serif; margin: 0; padding: 10px; }
+        h2 { text-align: center; color: #3498db; font-size: 20px; margin-bottom: 20px; }
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 5px; }
+        .card { background: #1a2332; border-radius: 12px; padding: 15px; text-align: center; cursor: pointer; border: 1px solid #24344d; transition: 0.2s; }
+        .card:active { background: #24344d; }
+        .card img { width: 70px; height: 70px; object-fit: contain; border-radius: 8px; background: #fff; padding: 2px; }
+        .card p { margin: 10px 0 0 0; font-size: 14px; font-weight: bold; color: #f1f2f6; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; }
     </style>
 </head>
 <body>
 
-    <!-- হেডার বা ব্র্যান্ডিং এলাকা -->
-    <header>
-        <div class="logo-area">
-            <h1>KJC <span>TV</span></h1>
-        </div>
-        <div class="club-info">
-            <p>কুশারপাড়া জুনিয়র ক্লাব</p>
-            <p><i class="fa-solid fa-location-dot"></i> পোরশা, নওগাঁ</p>
-        </div>
-    </header>
+    <h2>📺 লাইভ টিভি চ্যানেল</h2>
+    <div class="grid" id="channel-container"></div>
 
-    <!-- হিরো প্রমোশনাল ব্যানার -->
-    <div class="hero-banner">
-        <h2>KJC TV সার্ভারে স্বাগতম</h2>
-        <p>আমাদের নিজস্ব ফ্রি ওটিটি ও লাইভ টিভি স্ট্রিমিং পোর্টালে আপনার পছন্দের বিনোদন উপভোগ করুন।</p>
-    </div>
-
-    <!-- সেকশন ১: লাইভ টিভি -->
-    <div class="section-title">
-        <i class="fa-solid fa-tv" style="color: #ff0033;"></i> লাইভ টিভি চ্যানেল
-    </div>
-    
-    <div class="grid-container">
-        <!-- চ্যানেল ১ -->
-        <div class="media-card" onclick="openPlayer('https://www.youtube.com/embed/live_stream?channel=UC4SscP9UvV9fSnoX6XidLmg')">
-            <div class="thumbnail-box">
-                <span class="live-badge">LIVE</span>
-                <img src="https://images.unsplash.com/photo-1533481235957-19ab48171951?auto=format&fit=crop&w=400&q=80" alt="News">
-                <div class="play-btn-overlay"><i class="fa-regular fa-circle-play"></i></div>
-            </div>
-            <div class="card-details">
-                <div class="card-title">সময় টিভি লাইভ</div>
-                <div class="card-subtitle">২৪ ঘণ্টা সর্বশেষ খবর</div>
-            </div>
-        </div>
-
-        <!-- চ্যানেল ২ -->
-        <div class="media-card" onclick="openPlayer('https://www.youtube.com/embed/live_stream?channel=UCm8H-K676_t77B8B_P25W6w')">
-            <div class="thumbnail-box">
-                <span class="live-badge">LIVE</span>
-                <img src="https://images.unsplash.com/photo-1508847154043-be12a62861c1?auto=format&fit=crop&w=400&q=80" alt="Sports">
-                <div class="play-btn-overlay"><i class="fa-regular fa-circle-play"></i></div>
-            </div>
-            <div class="card-details">
-                <div class="card-title">যমুনা টিভি লাইভ</div>
-                <div class="card-subtitle">লাইভ নিউজ স্ট্রিমিং</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- সেকশন ২: নাটক ও মুভি কালেকশন -->
-    <div class="section-title">
-        <i class="fa-solid fa-clapperboard" style="color: #ffcc00;"></i> বিশেষ নাটক ও বিনোদন
-    </div>
-
-    <div class="grid-container">
-        <!-- নাটক ১ (ইউটিউব বা ড্রাইভের এমবেড লিংক দেওয়া যাবে) -->
-        <div class="media-card" onclick="openPlayer('https://www.youtube.com/embed/ZzEbeXWjZco')">
-            <div class="thumbnail-box">
-                <img src="https://images.unsplash.com/photo-1598899134739-24c46f58b8c0?auto=format&fit=crop&w=400&q=80" alt="Drama">
-                <div class="play-btn-overlay"><i class="fa-regular fa-circle-play"></i></div>
-            </div>
-            <div class="card-details">
-                <div class="card-title">বাংলা নতুন নাটক</div>
-                <div class="card-subtitle">এইচডি কোয়ালিটি ফুল ড্রামা</div>
-            </div>
-        </div>
-
-        <!-- নাটক ২ -->
-        <div class="media-card" onclick="openPlayer('https://www.youtube.com/embed/f3wP62S6qSg')">
-            <div class="thumbnail-box">
-                <img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=400&q=80" alt="Movie">
-                <div class="play-btn-overlay"><i class="fa-regular fa-circle-play"></i></div>
-            </div>
-            <div class="card-details">
-                <div class="card-title">শর্ট ফিল্ম কালেকশন</div>
-                <div class="card-subtitle">কুশারপাড়া বিশেষ এন্টারটেইনমেন্ট</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ভিডিও প্লেয়ার মোডাল ইন্টারফেস -->
-    <div id="videoPlayerModal" class="player-modal">
-        <div class="player-box">
-            <div class="video-container">
-                <iframe id="mainVideoPlayer" src="" allowfullscreen allow="autoplay"></iframe>
-            </div>
-        </div>
-        <button class="close-player" onclick="closePlayer()">বন্ধ করুন</button>
-    </div>
-
-    <!-- প্লেয়ার কন্ট্রোল স্ক্রিপ্ট -->
     <script>
-        function openPlayer(videoUrl) {
-            document.getElementById('mainVideoPlayer').src = videoUrl;
-            document.getElementById('videoPlayerModal').style.display = 'flex';
+        // আপনার গিটহাবের m3u ফাইলের RAW লিংক
+        const m3uUrl = 'https://raw.githubusercontent.com/kusharparajuniorclub-web/kjctv.github.io/main/playlist.m3u';
+
+        async function fetchM3U() {
+            try {
+                const response = await fetch(m3uUrl);
+                const text = await response.text();
+                parseM3U(text);
+            } catch (error) {
+                console.error("চ্যানেল লোড করা যায়নি:", error);
+            }
         }
-        function closePlayer() {
-            document.getElementById('mainVideoPlayer').src = '';
-            document.getElementById('videoPlayerModal').style.display = 'none';
+
+        function parseM3U(data) {
+            const lines = data.split('\n');
+            const container = document.getElementById('channel-container');
+            let currentName = '';
+            let currentLogo = '';
+
+            for (let i = 0; i < lines.length; i++) {
+                const line = lines[i].trim();
+                
+                if (line.startsWith('#EXTINF:')) {
+                    // নাম খুঁজে বের করা
+                    const nameMatch = line.match(/tvg-name="([^"]+)"/) || line.match(/,(.+)$/);
+                    currentName = nameMatch ? nameMatch[1] : 'Unknown Channel';
+                    
+                    // লোগো খুঁজে বের করা
+                    const logoMatch = line.match(/tvg-logo="([^"]+)"/);
+                    currentLogo = logoMatch ? logoMatch[1] : 'https://cdn-icons-png.flaticon.com/512/716/716429.png';
+                } else if (line.startsWith('http')) {
+                    const url = line;
+                    
+                    if (currentName) {
+                        const card = document.createElement('div');
+                        card.className = 'card';
+                        card.innerHTML = `
+                            <img src="${currentLogo}" onerror="this.src='https://cdn-icons-png.flaticon.com/512/716/716429.png'">
+                            <p>${currentName}</p>
+                        `;
+                        
+                        // ক্লিক করলে সরাসরি অ্যান্ড্রয়েড প্লেয়ারে ভিডিও প্লে হবে
+                        card.onclick = () => {
+                            window.location.href = url;
+                        };
+                        
+                        container.appendChild(card);
+                    }
+                    // রিসেট
+                    currentName = '';
+                    currentLogo = '';
+                }
+            }
         }
+
+        fetchM3U();
     </script>
 </body>
 </html>
