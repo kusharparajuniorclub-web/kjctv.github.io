@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KJC TV OTT</title>
-    <!-- FontAwesome used for slick icons -->
+    <title>KJC TV - Ultra OTT</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Video.js Player for smooth M3U8 streaming inside the app -->
+    <link href="https://vjs.zencdn.net/7.20.3/video-js.css" rel="stylesheet" />
     <style>
         :root {
             --bg-color: #090e17;
@@ -17,142 +18,176 @@
         body { 
             background-color: var(--bg-color); 
             color: var(--text-color); 
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+            font-family: 'Segoe UI', Roboto, sans-serif; 
             margin: 0; 
             padding: 0;
-            -webkit-user-select: none;
-            user-select: none;
         }
-        header {
+        /* Sticky Main OTT Display Player Screen */
+        .player-container {
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            background: #000;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+        .video-js {
+            width: 100% !important;
+            height: 100% !important;
+        }
+        .app-info {
+            padding: 12px 15px;
             background: linear-gradient(to bottom, #0d1726, var(--bg-color));
-            padding: 20px 15px;
-            text-align: left;
             border-bottom: 1px solid #1a263b;
         }
-        header h1 {
-            margin: 0;
-            font-size: 22px;
-            font-weight: 700;
-            letter-spacing: 0.5px;
+        .app-info h1 {
+            margin: 0; font-size: 18px; font-weight: 700;
             background: linear-gradient(45deg, #00ffcc, #00bcff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
-        header p {
-            margin: 5px 0 0 0;
-            font-size: 12px;
-            color: var(--text-secondary);
-        }
-        .category-section {
-            margin-bottom: 25px;
-            padding-left: 15px;
-        }
+        .app-info p { margin: 3px 0 0 0; font-size: 11px; color: var(--text-secondary); }
+        
+        /* Content Sections */
+        .main-scroller { padding-top: 10px; }
+        .category-section { margin-bottom: 22px; padding-left: 15px; }
         .category-title {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: #f1f5f9;
+            font-size: 15px; font-weight: 600; margin-bottom: 10px;
+            display: flex; align-items: center; gap: 8px; color: #f1f5f9;
         }
-        .category-title i {
-            color: var(--accent-color);
-            font-size: 14px;
-        }
-        /* Toffee-style horizontal scrolling slider */
+        .category-title i { color: var(--accent-color); font-size: 13px; }
+        
+        /* Premium Horizontal Slider */
         .slider {
-            display: flex;
-            overflow-x: auto;
-            gap: 14px;
-            padding-bottom: 10px;
-            scroll-behavior: smooth;
-            scrollbar-width: none; /* For Firefox */
+            display: flex; overflow-x: auto; gap: 12px;
+            padding-bottom: 8px; scroll-behavior: smooth;
         }
-        .slider::-webkit-scrollbar {
-            display: none; /* For Chrome, Safari, Opera */
-        }
+        .slider::-webkit-scrollbar { display: none; }
+        
+        /* TV Channel Round Card */
         .card {
-            flex: 0 0 auto;
-            width: 105px;
-            background: var(--card-bg);
-            border-radius: 14px;
-            padding: 12px 8px;
-            text-align: center;
-            cursor: pointer;
-            border: 1px solid #1e2d4a;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            flex: 0 0 auto; width: 95px; background: var(--card-bg);
+            border-radius: 12px; padding: 10px 6px; text-align: center;
+            cursor: pointer; border: 1px solid #1e2d4a; transition: 0.2s;
         }
-        .card:active {
-            transform: scale(0.95);
-            border-color: var(--accent-color);
-            background: #1c2b45;
-        }
+        .card:active { transform: scale(0.95); border-color: var(--accent-color); }
         .image-wrapper {
-            width: 75px;
-            height: 75px;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: #ffffff;
-            border-radius: 50%; /* Perfect circle style logo like premium OTTs */
-            overflow: hidden;
+            width: 65px; height: 65px; margin: 0 auto;
+            display: flex; align-items: center; justify-content: center;
+            background: #ffffff; border-radius: 50%; overflow: hidden;
             border: 2px solid #283a56;
-            box-shadow: inset 0 0 8px rgba(0,0,0,0.2);
         }
-        .card img {
-            width: 80%;
-            height: 80%;
-            object-fit: contain;
-        }
+        .card img { width: 75%; height: 75%; object-fit: contain; }
         .card p {
-            margin: 10px 0 0 0;
-            font-size: 12px;
-            font-weight: 600;
-            color: #e2e8f0;
-            text-overflow: ellipsis;
-            overflow: hidden;
-            white-space: nowrap;
+            margin: 8px 0 0 0; font-size: 11px; font-weight: 600; color: #e2e8f0;
+            text-overflow: ellipsis; overflow: hidden; white-space: nowrap;
         }
-        /* Shimmer effect while loading data */
-        .loading-shimmer {
-            padding: 50px 20px;
-            text-align: center;
-            color: var(--text-secondary);
-            font-size: 14px;
+
+        /* Drama & Movie Poster Rectangular Card */
+        .poster-card {
+            flex: 0 0 auto; width: 140px; background: var(--card-bg);
+            border-radius: 10px; overflow: hidden; cursor: pointer;
+            border: 1px solid #1e2d4a; transition: 0.2s;
         }
-        .loading-shimmer i {
-            font-size: 28px;
-            color: var(--accent-color);
-            margin-bottom: 10px;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+        .poster-card:active { transform: scale(0.95); border-color: var(--accent-color); }
+        .poster-thumb { width: 100%; height: 85px; object-fit: cover; }
+        .poster-details { padding: 8px; text-align: left; }
+        .poster-details h4 { margin: 0; font-size: 12px; color: #fff; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; }
+        .poster-details p { margin: 3px 0 0 0; font-size: 10px; color: var(--text-secondary); }
+
+        .loading-shimmer { padding: 30px; text-align: center; color: var(--text-secondary); }
+        .loading-shimmer i { font-size: 24px; color: var(--accent-color); animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>KJC TV PREMIUM</h1>
-        <p>কুশারপাড়া জুনিয়র ক্লাব ওটিটি সার্ভার</p>
-    </header>
+    <!-- ১. ওপরে থাকা মেইন ওটিটি ডিসপ্লে স্ক্রিন (ভিডিও প্লেয়ার) -->
+    <div class="player-container">
+        <video id="kjc-player" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="auto" poster="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgyniKyW9pUz1OKx5bgzLASwGVSuP0e7hX9FxVMTJMHxhu8X0tpucgSplBZgM8pCYrJJH0P2_dTC1-wzp4mMUU4sKnOzghGPCwWdbYOOa4jTyhpr7ydNj-UK-bc56IMsk2H3WZJ-SzSZIk0dTpyABCFR2_zjC2_c86W1pv7odFBT_Y-hyJs62g-3zCJkPGd/s1024/1000398131.png">
+            <p class="vjs-no-js">ভিডিও দেখার জন্য ব্রাউজার বা অ্যাপ আপডেট করুন।</p>
+        </video>
+    </div>
+
+    <div class="app-info">
+        <h1 id="playing-title">স্বাগতম KJC TV ওটিটি সার্ভারে</h1>
+        <p id="playing-cat">নিচ থেকে যেকোনো চ্যানেল বা নাটক সিলেক্ট করুন</p>
+    </div>
 
     <div id="loading" class="loading-shimmer">
         <i class="fa-solid fa-circle-notch"></i>
-        <p>চ্যানেলগুলো টফি সার্ভার থেকে সাজানো হচ্ছে...</p>
+        <p>সার্ভার থেকে কন্টেন্ট সাজানো হচ্ছে...</p>
     </div>
 
-    <div id="main-content" style="display: none; padding-top: 15px;">
-        <!-- Categories will generate dynamically here -->
+    <div class="main-scroller" id="main-content" style="display: none;">
+        <!-- এখানে লাইভ টিভি চ্যানেলগুলো অটো লোড হবে -->
+        <div id="dynamic-tv-sections"></div>
+
+        <!-- ২. বিশেষ নাটক সেকশন (এখানে আপনারা নতুন নাটক এড করতে পারবেন) -->
+        <div class="category-section">
+            <div class="category-title"><i class="fa-solid fa-clapperboard"></i> বিশেষ নাটক ও বিনোদন 🎭</div>
+            <div class="slider">
+                <!-- নাটক ১ -->
+                <div class="poster-card" onclick="playVideo('https://sample-videos.com/video321/mp4/720/big_buck_bunny_720p_1mb.mp4', 'বাংলা নতুন নাটক', 'এইচডি কোয়ালিটি ফুল ড্রামা')">
+                    <img class="poster-thumb" src="https://images.unsplash.com/photo-1594909122845-11baa439b7bf?w=400" alt="Natok">
+                    <div class="poster-details">
+                        <h4>বাংলা নতুন নাটক</h4>
+                        <p>KJC বিশেষ রিলিজ</p>
+                    </div>
+                </div>
+                <!-- নাটক ২ -->
+                <div class="poster-card" onclick="playVideo('https://sample-videos.com/video321/mp4/720/big_buck_bunny_720p_1mb.mp4', 'শর্ট ফিল্ম কালেকশন', 'কুশারপাড়া বিশেষ নাটক')">
+                    <img class="poster-thumb" src="https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=400" alt="Short Film">
+                    <div class="poster-details">
+                        <h4>শর্ট ফিল্ম কালেকশন</h4>
+                        <p>ঈদ স্পেশাল ২০২৬</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ৩. মুভি ও সিনেমা সেকশন -->
+        <div class="category-section">
+            <div class="category-title"><i class="fa-solid fa-film"></i> ব্লকবাস্টার মুভি কালেকশন 🎬</div>
+            <div class="slider">
+                <div class="poster-card" onclick="playVideo('https://sample-videos.com/video321/mp4/720/big_buck_bunny_720p_1mb.mp4', 'নতুন বাংলা সিনেমা', 'ফুল এইচডি ১০০% ফ্রি')">
+                    <img class="poster-thumb" src="https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=400" alt="Movie">
+                    <div class="poster-details">
+                        <h4>নতুন বাংলা সিনেমা</h4>
+                        <p>সুপারহিট কালেকশন</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
+    <!-- Video.js and HLS Streaming Scripts -->
+    <script src="https://vjs.zencdn.net/7.20.3/video.min.js"></script>
     <script>
         const m3uUrl = 'https://raw.githubusercontent.com/kusharparajuniorclub-web/kjctv.github.io/main/playlist.m3u';
+        let player;
+
+        // প্লেয়ার ইনিশিয়ালাইজ করা
+        document.addEventListener('DOMContentLoaded', () => {
+            player = videojs('kjc-player', {
+                html5: { vhs: { overrideNative: true }, nativeAudioTracks: false, nativeVideoTracks: false }
+            });
+            initOTT();
+        });
+
+        // অটোমেটিক ডিসপ্লে স্ক্রিনে ভিডিও প্লে করার ফাংশন
+        function playVideo(url, name, category) {
+            document.getElementById('playing-title').innerText = name;
+            document.getElementById('playing-cat').innerText = category;
+            
+            player.src({ src: url, type: url.includes('m3u8') ? 'application/x-mpegURL' : 'video/mp4' });
+            player.ready(() => {
+                player.play().catch(e => console.log("Auto-play blocked, waiting for user click."));
+            });
+            // স্ক্রল করে ওপরে প্লেয়ারে নিয়ে যাওয়া
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
 
         async function initOTT() {
             try {
@@ -160,81 +195,56 @@
                 const text = await response.text();
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('main-content').style.display = 'block';
-                parseAndRender(text);
+                parseM3U(text);
             } catch (error) {
                 document.getElementById('loading').innerHTML = '<p style="color:#ef4444;">সার্ভার কানেকশন ব্যর্থ হয়েছে!</p>';
             }
         }
 
-        function parseAndRender(data) {
+        function parseM3U(data) {
             const lines = data.split('\n');
             const categories = {
                 "Sports Live 🏆": [],
                 "Live News 📰": [],
-                "Entertainment 🎭": [],
-                "Movies & Others 🎬": []
+                "Entertainment 🎭": []
             };
 
-            let currentName = '';
-            let currentLogo = '';
-            let currentGroup = '';
+            let currentName = ''; let currentLogo = ''; let currentGroup = '';
 
             for (let i = 0; i < lines.length; i++) {
                 const line = lines[i].trim();
-                
                 if (line.startsWith('#EXTINF:')) {
-                    // Extracting channel clean name
                     const nameMatch = line.match(/group-title="([^"]+)"/);
                     const labelMatch = line.match(/,(.+)$/);
-                    
                     currentName = labelMatch ? labelMatch[1].trim() : 'Unknown Channel';
-                    
-                    // Extracting channel group/category from m3u
                     currentGroup = nameMatch ? nameMatch[1].toLowerCase() : '';
-                    
-                    // Extracting channel logo
                     const logoMatch = line.match(/tvg-logo="([^"]+)"/);
                     currentLogo = logoMatch ? logoMatch[1] : '';
                 } else if (line.startsWith('http')) {
-                    const url = line;
-                    
-                    // Filter out bad, blank or promo channels that break the look
                     if (currentName && !currentName.includes("Welcome") && !currentName.includes("New App")) {
-                        
-                        let targetCategory = "Movies & Others 🎬";
-                        
-                        // Smart auto-sorting algorithm based on your m3u list data
+                        let targetCategory = "Entertainment 🎭";
                         if (currentGroup.includes("sports") || currentGroup.includes("bdix") || currentName.toLowerCase().includes("sports") || currentName.toLowerCase().includes("cricket")) {
                             targetCategory = "Sports Live 🏆";
-                        } else if (currentGroup.includes("news") || currentName.toLowerCase().includes("tv") || currentName.includes("সময়") || currentName.includes("যমুনা")) {
+                        } else if (currentGroup.includes("news") || currentName.toLowerCase().includes("tv") || currentName.includes("সময়") || currentName.includes("যমুনা")) {
                             targetCategory = "Live News 📰";
-                        } else if (currentGroup.includes("entertainment") || currentGroup.includes("bangla") || currentGroup.includes("akash") || currentName.includes("Bangla")) {
-                            targetCategory = "Entertainment 🎭";
                         }
-
                         categories[targetCategory].push({
                             name: currentName,
                             logo: currentLogo || 'https://cdn-icons-png.flaticon.com/512/716/716429.png',
-                            url: url
+                            url: line
                         });
                     }
                     currentName = ''; currentLogo = ''; currentGroup = '';
                 }
             }
 
-            // Rendering to UI
-            const mainContainer = document.getElementById('main-content');
-            
+            const tvContainer = document.getElementById('dynamic-tv-sections');
             for (const [catName, chList] of Object.entries(categories)) {
-                if (chList.length === 0) continue; // Skip empty groups
+                if (chList.length === 0) continue;
 
                 const section = document.createElement('div');
                 section.className = 'category-section';
-                
-                const title = document.createElement('div');
-                title.className = 'category-title';
-                title.innerHTML = `<i class="fa-solid fa-play"></i> ${catName}`;
-                section.appendChild(title);
+                section.innerHTML = `<div class="category-title"><i class="fa-solid fa-circle-dot" style="color:#ef4444;"></i> ${catName}</div>`;
 
                 const slider = document.createElement('div');
                 slider.className = 'slider';
@@ -243,23 +253,18 @@
                     const card = document.createElement('div');
                     card.className = 'card';
                     card.innerHTML = `
-                        <div class="image-wrapper">
-                            <img src="${ch.logo}" onerror="this.src='https://cdn-icons-png.flaticon.com/512/716/716429.png'">
-                        </div>
+                        <div class="image-wrapper"><img src="${ch.logo}" onerror="this.src='https://cdn-icons-png.flaticon.com/512/716/716429.png'"></div>
                         <p>${ch.name}</p>
                     `;
-                    card.onclick = () => {
-                        window.location.href = ch.url;
-                    };
+                    // ক্লিক লজিক: অন্য কোথাও যাবে না, উপরে প্লে হবে
+                    card.onclick = () => playVideo(ch.url, ch.name, catName);
                     slider.appendChild(card);
                 });
 
                 section.appendChild(slider);
-                mainContainer.appendChild(section);
+                tvContainer.appendChild(section);
             }
         }
-
-        initOTT();
     </script>
 </body>
 </html>
