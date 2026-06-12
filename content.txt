@@ -1,0 +1,13 @@
+#CATEGORY:Sports Live 🏆
+চ্যানেলের নাম ১ | লোগোর লিংক ১ | ভিডিওর লিংক ১
+চ্যানেলের নাম ২ | লোগোর লিংক ২ | ভিডিওর লিংক ২
+
+#CATEGORY:Live News 📰
+যমুনা টিভি | https://example.com/jamuna.png | https://example.com/jamuna.m3u8
+
+#CATEGORY:হিন্দি মুভি কালেকশন 🎬
+Dunki (2023) | https://images.justwatch.com/poster/309324545/s332/dunki.webp | https://server3.ftpbd.net/FTP-3/Hindi%20Movies/Dunki%20%282023%29/Dunki.2023.1080p.NF.WEB-DL.DDP5.1.Atmos.H.264-BEN THE MEN.mkv
+Animal (2023) | https://images.justwatch.com/poster/306232230/s332/animal-2023.webp | https://server3.ftpbd.net/FTP-3/Hindi%20Movies/Animal%20%282023%29/Animal.2023.1080p.NF.WEB-DL.DDP5.1.Atmos.H.264-BEN%20THE%20MEN.mkv
+
+#CATEGORY:ঈদ স্পেশাল নাটক 🎭
+নতুন বাংলা নাটক | https://images.unsplash.com/photo-1594909122845-11baa439b7bf?w=400 | https://sample-videos.com/video321/mp4/720/big_buck_bunny_720p_1mb.mp4
