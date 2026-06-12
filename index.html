@@ -1,11 +1,12 @@
+
 <!DOCTYPE html>
 <html lang="bn">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KJC TV - Premium OTT</title>
+    <title>KJC TV - Ultimate Dynamic OTT</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Plyr HTML5 Player for better local MP4/MKV compatibility -->
+    <!-- Plyr HTML5 Player Component -->
     <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
     <style>
         :root {
@@ -19,23 +20,17 @@
             background-color: var(--bg-color); 
             color: var(--text-color); 
             font-family: 'Segoe UI', Roboto, sans-serif; 
-            margin: 0; 
-            padding: 0;
+            margin: 0; padding: 0;
+            -webkit-user-select: none; user-select: none;
         }
-        /* Sticky Main display Player Screen */
+        /* Sticky Top Player Screen */
         .player-container {
-            position: sticky;
-            top: 0;
-            z-index: 999;
-            background: #000;
-            width: 100%;
-            aspect-ratio: 16 / 9;
+            position: sticky; top: 0; z-index: 999;
+            background: #000; width: 100%; aspect-ratio: 16 / 9;
             box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
-        .player-container video {
-            width: 100%;
-            height: 100%;
-        }
+        .player-container video { width: 100%; height: 100%; }
+        
         .app-info {
             padding: 12px 15px;
             background: linear-gradient(to bottom, #0d1726, var(--bg-color));
@@ -56,114 +51,66 @@
         }
         .category-title i { color: var(--accent-color); font-size: 13px; }
         
+        /* Universal Premium Horizontal Slider */
         .slider {
             display: flex; overflow-x: auto; gap: 12px;
             padding-bottom: 8px; scroll-behavior: smooth;
         }
         .slider::-webkit-scrollbar { display: none; }
         
-        /* TV Card */
-        .card {
-            flex: 0 0 auto; width: 95px; background: var(--card-bg);
-            border-radius: 12px; padding: 10px 6px; text-align: center;
-            cursor: pointer; border: 1px solid #1e2d4a; transition: 0.2s;
-        }
-        .card:active { transform: scale(0.95); border-color: var(--accent-color); }
-        .image-wrapper {
-            width: 65px; height: 65px; margin: 0 auto;
-            display: flex; align-items: center; justify-content: center;
-            background: #ffffff; border-radius: 50%; overflow: hidden;
-            border: 2px solid #283a56;
-        }
-        .card img { width: 75%; height: 75%; object-fit: contain; }
-        .card p {
-            margin: 8px 0 0 0; font-size: 11px; font-weight: 600; color: #e2e8f0;
-            text-overflow: ellipsis; overflow: hidden; white-space: nowrap;
-        }
-
-        /* Movie Card */
+        /* Smart Adaptive Premium Card (Handles both Channels & Movies nicely) */
         .poster-card {
-            flex: 0 0 auto; width: 110px; background: var(--card-bg);
-            border-radius: 10px; overflow: hidden; cursor: pointer;
+            flex: 0 0 auto; width: 115px; background: var(--card-bg);
+            border-radius: 12px; overflow: hidden; cursor: pointer;
             border: 1px solid #1e2d4a; transition: 0.2s;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
         .poster-card:active { transform: scale(0.95); border-color: var(--accent-color); }
-        .poster-thumb { width: 100%; height: 150px; object-fit: cover; }
-        .poster-details { padding: 6px; text-align: left; }
+        .poster-thumb-wrapper {
+            width: 100%; height: 135px; background: #fff; 
+            display: flex; align-items: center; justify-content: center; overflow: hidden;
+        }
+        .poster-thumb { width: 100%; height: 100%; object-fit: cover; transition: 0.2s; }
+        /* Automatic logo tuning if image is square or icon */
+        .poster-thumb.contain { width: 75%; height: 75%; object-fit: contain; }
+        
+        .poster-details { padding: 8px; text-align: left; }
         .poster-details h4 { margin: 0; font-size: 11px; color: #fff; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; }
         .poster-details p { margin: 2px 0 0 0; font-size: 9px; color: var(--accent-color); }
 
-        .loading-shimmer { padding: 30px; text-align: center; color: var(--text-secondary); }
-        .loading-shimmer i { font-size: 24px; color: var(--accent-color); animation: spin 1s linear infinite; }
+        .loading-shimmer { padding: 50px 20px; text-align: center; color: var(--text-secondary); }
+        .loading-shimmer i { font-size: 26px; color: var(--accent-color); animation: spin 1s linear infinite; margin-bottom: 10px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
 
+    <!-- ওপরে ফিক্সড ওটিটি ডিসপ্লে প্লেয়ার -->
     <div class="player-container">
-        <!-- Native HTML5 Video container for Plyr Integration -->
         <video id="player" playsinline controls poster="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgyniKyW9pUz1OKx5bgzLASwGVSuP0e7hX9FxVMTJMHxhu8X0tpucgSplBZgM8pCYrJJH0P2_dTC1-wzp4mMUU4sKnOzghGPCwWdbYOOa4jTyhpr7ydNj-UK-bc56IMsk2H3WZJ-SzSZIk0dTpyABCFR2_zjC2_c86W1pv7odFBT_Y-hyJs62g-3zCJkPGd/s1024/1000398131.png">
             <source id="video-source" src="" type="video/mp4">
         </video>
     </div>
 
     <div class="app-info">
-        <h1 id="playing-title">KJC TV ওটিটি সার্ভার</h1>
-        <p id="playing-cat">নিচ থেকে যেকোনো চ্যানেল বা মুভি সিলেক্ট করুন</p>
+        <h1 id="playing-title">KJC TV PREMIUM</h1>
+        <p id="playing-cat">কুশারপাড়া জুনিয়র ক্লাব ওটিটি হাব</p>
     </div>
 
     <div id="loading" class="loading-shimmer">
         <i class="fa-solid fa-circle-notch"></i>
-        <p>সার্ভার থেকে কন্টেন্ট সাজানো হচ্ছে...</p>
+        <p>সার্ভার ফাইল থেকে কন্টেন্ট সাজানো হচ্ছে...</p>
     </div>
 
-    <div class="main-scroller" id="main-content" style="display: none;">
-        
-        <div id="dynamic-tv-sections"></div>
+    <!-- এখানেই শতকরা সব ভিডিও ও চ্যানেল এক জায়গায় লোড হবে -->
+    <div class="main-scroller" id="main-content" style="display: none;"></div>
 
-        <!-- FTP Movies Category -->
-        <div class="category-section">
-            <div class="category-title"><i class="fa-solid fa-film"></i> হিন্দি ব্লকবাস্টার মুভি (FTP Server) 🎬</div>
-            <div class="slider">
-                
-                <!-- Dunki -->
-                <div class="poster-card" onclick="playVideo('https://server3.ftpbd.net/FTP-3/Hindi%20Movies/Dunki%20%282023%29/Dunki.2023.1080p.NF.WEB-DL.DDP5.1.Atmos.H.264-BEN THE MEN.mkv', 'Dunki (2023)', 'হিন্দি মুভি কালেকশন')">
-                    <img class="poster-thumb" src="https://images.justwatch.com/poster/309324545/s332/dunki.webp" alt="Dunki">
-                    <div class="poster-details">
-                        <h4>Dunki (2023)</h4>
-                        <p>1080p HD</p>
-                    </div>
-                </div>
-
-                <!-- Animal -->
-                <div class="poster-card" onclick="playVideo('https://server3.ftpbd.net/FTP-3/Hindi%20Movies/Animal%20%282023%29/Animal.2023.1080p.NF.WEB-DL.DDP5.1.Atmos.H.264-BEN%20THE%20MEN.mkv', 'Animal (2023)', 'হিন্দি মুভি কালেকশন')">
-                    <img class="poster-thumb" src="https://images.justwatch.com/poster/306232230/s332/animal-2023.webp" alt="Animal">
-                    <div class="poster-details">
-                        <h4>Animal (2023)</h4>
-                        <p>1080p HD</p>
-                    </div>
-                </div>
-
-                <!-- Jawan -->
-                <div class="poster-card" onclick="playVideo('https://server3.ftpbd.net/FTP-3/Hindi%20Movies/Jawan%20%282023%29/Jawan.2023.Extended.1080p.NF.WEB-DL.DDP5.1.Atmos.H.264-BEN%20THE%20MEN.mkv', 'Jawan (2023)', 'হিন্দি মুভি কালেকশন')">
-                    <img class="poster-thumb" src="https://images.justwatch.com/poster/306195583/s332/jawan.webp" alt="Jawan">
-                    <div class="poster-details">
-                        <h4>Jawan (2023)</h4>
-                        <p>Extended HD</p>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
-    </div>
-
-    <!-- Plyr & HLS Scripts for maximum format rendering -->
+    <!-- Plyr Core Script Engine -->
     <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <script>
-        const m3uUrl = 'https://raw.githubusercontent.com/kusharparajuniorclub-web/kjctv.github.io/main/playlist.m3u';
+        // আপনার গিটহাবের সেই টেক্সট ফাইলটির ডিরেক্ট লিংক
+        const txtUrl = 'https://raw.githubusercontent.com/kusharparajuniorclub-web/kjctv.github.io/main/content.txt';
         let plyrPlayer;
         let hls;
 
@@ -171,21 +118,16 @@
             plyrPlayer = new Plyr('#player', {
                 controls: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'fullscreen']
             });
-            initOTT();
+            fetchExternalContent();
         });
 
         function playVideo(url, name, category) {
             document.getElementById('playing-title').innerText = name;
             document.getElementById('playing-cat').innerText = category;
-            
             const videoElement = document.getElementById('player');
             
-            // পূর্বের HLS কানেকশন রিমুভ করা
-            if (hls) {
-                hls.destroy();
-            }
+            if (hls) { hls.destroy(); }
 
-            // যদি এটি লাইভ টিভি স্ট্রিম (.m3u8) হয়
             if (url.includes('m3u8')) {
                 if (Hls.isSupported()) {
                     hls = new Hls();
@@ -195,88 +137,81 @@
                     videoElement.src = url;
                 }
             } else {
-                // এফটিপি সার্ভারের mkv/mp4 ভিডিওর জন্য ডিরেক্ট সোর্স ইঞ্জিন
                 videoElement.src = url;
             }
             
-            plyrPlayer.play().catch(e => console.log("Playback error or network constraint."));
+            plyrPlayer.play().catch(e => console.log("Auto-play status handled."));
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        async function initOTT() {
+        async function fetchExternalContent() {
             try {
-                const response = await fetch(m3uUrl);
+                const response = await fetch(txtUrl);
                 const text = await response.text();
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('main-content').style.display = 'block';
-                parseM3U(text);
+                parseAndBuildUI(text);
             } catch (error) {
-                document.getElementById('loading').innerHTML = '<p style="color:#ef4444;">সার্ভার কানেকশন ব্যর্থ হয়েছে!</p>';
+                document.getElementById('loading').innerHTML = '<p style="color:#ef4444;">কন্টেন্ট ফাইল লোড করা যায়নি!</p>';
             }
         }
 
-        function parseM3U(data) {
+        function parseAndBuildUI(data) {
             const lines = data.split('\n');
-            const categories = {
-                "Sports Live 🏆": [],
-                "Live News 📰": [],
-                "Entertainment 🎭": []
-            };
+            const mainContentContainer = document.getElementById('main-content');
+            
+            let currentSection = null;
+            let currentSlider = null;
+            let currentCatName = "";
 
-            let currentName = ''; let currentLogo = ''; let currentGroup = '';
+            lines.forEach(line => {
+                let trimmed = line.trim();
+                if (!trimmed) return;
 
-            for (let i = 0; i < lines.length; i++) {
-                const line = lines[i].trim();
-                if (line.startsWith('#EXTINF:')) {
-                    const nameMatch = line.match(/group-title="([^"]+)"/);
-                    const labelMatch = line.match(/,(.+)$/);
-                    currentName = labelMatch ? labelMatch[1].trim() : 'Unknown Channel';
-                    currentGroup = nameMatch ? nameMatch[1].toLowerCase() : '';
-                    const logoMatch = line.match(/tvg-logo="([^"]+)"/);
-                    currentLogo = logoMatch ? logoMatch[1] : '';
-                } else if (line.startsWith('http')) {
-                    if (currentName && !currentName.includes("Welcome") && !currentName.includes("New App")) {
-                        let targetCategory = "Entertainment 🎭";
-                        if (currentGroup.includes("sports") || currentGroup.includes("bdix") || currentName.toLowerCase().includes("sports") || currentName.toLowerCase().includes("cricket")) {
-                            targetCategory = "Sports Live 🏆";
-                        } else if (currentGroup.includes("news") || currentName.toLowerCase().includes("tv") || currentName.includes("সময়") || currentName.includes("যমুনা")) {
-                            targetCategory = "Live News 📰";
-                        }
-                        categories[targetCategory].push({
-                            name: currentName,
-                            logo: currentLogo || 'https://cdn-icons-png.flaticon.com/512/716/716429.png',
-                            url: line
-                        });
+                // নতুন ক্যাটাগরি তৈরি শনাক্তকরণ
+                if (trimmed.startsWith('#CATEGORY:')) {
+                    currentCatName = trimmed.replace('#CATEGORY:', '').trim();
+                    
+                    currentSection = document.createElement('div');
+                    currentSection.className = 'category-section';
+                    currentSection.innerHTML = `<div class="category-title"><i class="fa-solid fa-play"></i> ${currentCatName}</div>`;
+                    
+                    currentSlider = document.createElement('div');
+                    currentSlider.className = 'slider';
+                    
+                    currentSection.appendChild(currentSlider);
+                    mainContentContainer.appendChild(currentSection);
+                } 
+                // কন্টেন্ট ডেটা পার্সিং (নাম | লোগো | লিংক)
+                else if (trimmed.includes('|') && currentSlider) {
+                    const parts = trimmed.split('|');
+                    const name = parts[0] ? parts[0].trim() : 'Unknown';
+                    const logo = parts[1] ? parts[1].trim() : 'https://cdn-icons-png.flaticon.com/512/716/716429.png';
+                    const url = parts[2] ? parts[2].trim() : '';
+
+                    if (url) {
+                        const card = document.createElement('div');
+                        card.className = 'poster-card';
+                        
+                        // যদি লোগোটি পিএনজি বা আইকন টাইপ হয় তবে সুন্দর দেখানোর জন্য অটো ফিট ক্লাস টিউনিং
+                        const isIcon = logo.includes('.png') || logo.includes('icon') || logo.includes('flaticon');
+                        const thumbClass = isIcon ? 'poster-thumb contain' : 'poster-thumb';
+
+                        card.innerHTML = `
+                            <div class="poster-thumb-wrapper">
+                                <img class="${thumbClass}" src="${logo}" onerror="this.src='https://cdn-icons-png.flaticon.com/512/716/716429.png'">
+                            </div>
+                            <div class="poster-details">
+                                <h4>${name}</h4>
+                                <p>OTT Stream</p>
+                            </div>
+                        `;
+                        
+                        card.onclick = () => playVideo(url, name, currentCatName);
+                        currentSlider.appendChild(card);
                     }
-                    currentName = ''; currentLogo = ''; currentGroup = '';
                 }
-            }
-
-            const tvContainer = document.getElementById('dynamic-tv-sections');
-            for (const [catName, chList] of Object.entries(categories)) {
-                if (chList.length === 0) continue;
-
-                const section = document.createElement('div');
-                section.className = 'category-section';
-                section.innerHTML = `<div class="category-title"><i class="fa-solid fa-circle-dot" style="color:#ef4444;"></i> ${catName}</div>`;
-
-                const slider = document.createElement('div');
-                slider.className = 'slider';
-
-                chList.forEach(ch => {
-                    const card = document.createElement('div');
-                    card.className = 'card';
-                    card.innerHTML = `
-                        <div class="image-wrapper"><img src="${ch.logo}" onerror="this.src='https://cdn-icons-png.flaticon.com/512/716/716429.png'"></div>
-                        <p>${ch.name}</p>
-                    `;
-                    card.onclick = () => playVideo(ch.url, ch.name, catName);
-                    slider.appendChild(card);
-                });
-
-                section.appendChild(slider);
-                tvContainer.appendChild(section);
-            }
+            });
         }
     </script>
 </body>
