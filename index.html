@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KJC TV - Premium OTT</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Video.js Player for smooth M3U8 and MP4 streaming inside the app -->
-    <link href="https://vjs.zencdn.net/7.20.3/video-js.css" rel="stylesheet" />
+    <!-- Plyr HTML5 Player for better local MP4/MKV compatibility -->
+    <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
     <style>
         :root {
             --bg-color: #090e17;
@@ -22,7 +22,7 @@
             margin: 0; 
             padding: 0;
         }
-        /* Sticky Main OTT Display Player Screen */
+        /* Sticky Main display Player Screen */
         .player-container {
             position: sticky;
             top: 0;
@@ -32,9 +32,9 @@
             aspect-ratio: 16 / 9;
             box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
-        .video-js {
-            width: 100% !important;
-            height: 100% !important;
+        .player-container video {
+            width: 100%;
+            height: 100%;
         }
         .app-info {
             padding: 12px 15px;
@@ -48,7 +48,6 @@
         }
         .app-info p { margin: 3px 0 0 0; font-size: 11px; color: var(--text-secondary); }
         
-        /* Content Sections */
         .main-scroller { padding-top: 10px; }
         .category-section { margin-bottom: 22px; padding-left: 15px; }
         .category-title {
@@ -57,14 +56,13 @@
         }
         .category-title i { color: var(--accent-color); font-size: 13px; }
         
-        /* Premium Horizontal Slider */
         .slider {
             display: flex; overflow-x: auto; gap: 12px;
             padding-bottom: 8px; scroll-behavior: smooth;
         }
         .slider::-webkit-scrollbar { display: none; }
         
-        /* TV Channel Card */
+        /* TV Card */
         .card {
             flex: 0 0 auto; width: 95px; background: var(--card-bg);
             border-radius: 12px; padding: 10px 6px; text-align: center;
@@ -83,7 +81,7 @@
             text-overflow: ellipsis; overflow: hidden; white-space: nowrap;
         }
 
-        /* Movie Poster Vertical Netflix Style Card */
+        /* Movie Card */
         .poster-card {
             flex: 0 0 auto; width: 110px; background: var(--card-bg);
             border-radius: 10px; overflow: hidden; cursor: pointer;
@@ -103,15 +101,15 @@
 </head>
 <body>
 
-    <!-- ওপরে থাকা মেইন ওটিটি ডিসপ্লে স্ক্রিন -->
     <div class="player-container">
-        <video id="kjc-player" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="auto" poster="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgyniKyW9pUz1OKx5bgzLASwGVSuP0e7hX9FxVMTJMHxhu8X0tpucgSplBZgM8pCYrJJH0P2_dTC1-wzp4mMUU4sKnOzghGPCwWdbYOOa4jTyhpr7ydNj-UK-bc56IMsk2H3WZJ-SzSZIk0dTpyABCFR2_zjC2_c86W1pv7odFBT_Y-hyJs62g-3zCJkPGd/s1024/1000398131.png">
-            <p class="vjs-no-js">ভিডিও দেখার জন্য ব্রাউজার বা অ্যাপ আপডেট করুন।</p>
+        <!-- Native HTML5 Video container for Plyr Integration -->
+        <video id="player" playsinline controls poster="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgyniKyW9pUz1OKx5bgzLASwGVSuP0e7hX9FxVMTJMHxhu8X0tpucgSplBZgM8pCYrJJH0P2_dTC1-wzp4mMUU4sKnOzghGPCwWdbYOOa4jTyhpr7ydNj-UK-bc56IMsk2H3WZJ-SzSZIk0dTpyABCFR2_zjC2_c86W1pv7odFBT_Y-hyJs62g-3zCJkPGd/s1024/1000398131.png">
+            <source id="video-source" src="" type="video/mp4">
         </video>
     </div>
 
     <div class="app-info">
-        <h1 id="playing-title">স্বাগতম KJC TV ওটিটি সার্ভারে</h1>
+        <h1 id="playing-title">KJC TV ওটিটি সার্ভার</h1>
         <p id="playing-cat">নিচ থেকে যেকোনো চ্যানেল বা মুভি সিলেক্ট করুন</p>
     </div>
 
@@ -122,15 +120,14 @@
 
     <div class="main-scroller" id="main-content" style="display: none;">
         
-        <!-- লাইভ টিভি চ্যানেলগুলোর অটো জেনারেটেড সেকশন -->
         <div id="dynamic-tv-sections"></div>
 
-        <!-- FTP সার্ভার হিন্দি মুভি সেকশন (Netflix লুকে খাড়া পোস্টার) -->
+        <!-- FTP Movies Category -->
         <div class="category-section">
             <div class="category-title"><i class="fa-solid fa-film"></i> হিন্দি ব্লকবাস্টার মুভি (FTP Server) 🎬</div>
             <div class="slider">
                 
-                <!-- মুভি ১: Dunki -->
+                <!-- Dunki -->
                 <div class="poster-card" onclick="playVideo('https://server3.ftpbd.net/FTP-3/Hindi%20Movies/Dunki%20%282023%29/Dunki.2023.1080p.NF.WEB-DL.DDP5.1.Atmos.H.264-BEN THE MEN.mkv', 'Dunki (2023)', 'হিন্দি মুভি কালেকশন')">
                     <img class="poster-thumb" src="https://images.justwatch.com/poster/309324545/s332/dunki.webp" alt="Dunki">
                     <div class="poster-details">
@@ -139,7 +136,7 @@
                     </div>
                 </div>
 
-                <!-- মুভি ২: Animal -->
+                <!-- Animal -->
                 <div class="poster-card" onclick="playVideo('https://server3.ftpbd.net/FTP-3/Hindi%20Movies/Animal%20%282023%29/Animal.2023.1080p.NF.WEB-DL.DDP5.1.Atmos.H.264-BEN%20THE%20MEN.mkv', 'Animal (2023)', 'হিন্দি মুভি কালেকশন')">
                     <img class="poster-thumb" src="https://images.justwatch.com/poster/306232230/s332/animal-2023.webp" alt="Animal">
                     <div class="poster-details">
@@ -148,7 +145,7 @@
                     </div>
                 </div>
 
-                <!-- মুভি ৩: Jawan -->
+                <!-- Jawan -->
                 <div class="poster-card" onclick="playVideo('https://server3.ftpbd.net/FTP-3/Hindi%20Movies/Jawan%20%282023%29/Jawan.2023.Extended.1080p.NF.WEB-DL.DDP5.1.Atmos.H.264-BEN%20THE%20MEN.mkv', 'Jawan (2023)', 'হিন্দি মুভি কালেকশন')">
                     <img class="poster-thumb" src="https://images.justwatch.com/poster/306195583/s332/jawan.webp" alt="Jawan">
                     <div class="poster-details">
@@ -162,15 +159,17 @@
 
     </div>
 
-    <!-- Video.js Scripts -->
-    <script src="https://vjs.zencdn.net/7.20.3/video.min.js"></script>
+    <!-- Plyr & HLS Scripts for maximum format rendering -->
+    <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <script>
         const m3uUrl = 'https://raw.githubusercontent.com/kusharparajuniorclub-web/kjctv.github.io/main/playlist.m3u';
-        let player;
+        let plyrPlayer;
+        let hls;
 
         document.addEventListener('DOMContentLoaded', () => {
-            player = videojs('kjc-player', {
-                html5: { vhs: { overrideNative: true } }
+            plyrPlayer = new Plyr('#player', {
+                controls: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'fullscreen']
             });
             initOTT();
         });
@@ -179,18 +178,28 @@
             document.getElementById('playing-title').innerText = name;
             document.getElementById('playing-cat').innerText = category;
             
-            // অটো ডিটেক্ট রানিং ফরম্যাট (m3u8 অথবা mp4/mkv)
-            let type = 'video/mp4';
+            const videoElement = document.getElementById('player');
+            
+            // পূর্বের HLS কানেকশন রিমুভ করা
+            if (hls) {
+                hls.destroy();
+            }
+
+            // যদি এটি লাইভ টিভি স্ট্রিম (.m3u8) হয়
             if (url.includes('m3u8')) {
-                type = 'application/x-mpegURL';
-            } else if (url.includes('mkv')) {
-                type = 'video/webm'; // অনেক ব্রাউজার সরাসরি mkv সাপোর্ট করতে ভিডিও এলিমেন্ট কনভার্ট করে
+                if (Hls.isSupported()) {
+                    hls = new Hls();
+                    hls.loadSource(url);
+                    hls.attachMedia(videoElement);
+                } else if (videoElement.canPlayType('application/vnd.apple.mpegurl')) {
+                    videoElement.src = url;
+                }
+            } else {
+                // এফটিপি সার্ভারের mkv/mp4 ভিডিওর জন্য ডিরেক্ট সোর্স ইঞ্জিন
+                videoElement.src = url;
             }
             
-            player.src({ src: url, type: type });
-            player.ready(() => {
-                player.play().catch(e => console.log("Play blocked, interaction required."));
-            });
+            plyrPlayer.play().catch(e => console.log("Playback error or network constraint."));
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
