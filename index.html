@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KJC TV - Ultra OTT</title>
+    <title>KJC TV - Premium OTT</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Video.js Player for smooth M3U8 streaming inside the app -->
+    <!-- Video.js Player for smooth M3U8 and MP4 streaming inside the app -->
     <link href="https://vjs.zencdn.net/7.20.3/video-js.css" rel="stylesheet" />
     <style>
         :root {
@@ -64,7 +64,7 @@
         }
         .slider::-webkit-scrollbar { display: none; }
         
-        /* TV Channel Round Card */
+        /* TV Channel Card */
         .card {
             flex: 0 0 auto; width: 95px; background: var(--card-bg);
             border-radius: 12px; padding: 10px 6px; text-align: center;
@@ -83,17 +83,18 @@
             text-overflow: ellipsis; overflow: hidden; white-space: nowrap;
         }
 
-        /* Drama & Movie Poster Rectangular Card */
+        /* Movie Poster Vertical Netflix Style Card */
         .poster-card {
-            flex: 0 0 auto; width: 140px; background: var(--card-bg);
+            flex: 0 0 auto; width: 110px; background: var(--card-bg);
             border-radius: 10px; overflow: hidden; cursor: pointer;
             border: 1px solid #1e2d4a; transition: 0.2s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
         .poster-card:active { transform: scale(0.95); border-color: var(--accent-color); }
-        .poster-thumb { width: 100%; height: 85px; object-fit: cover; }
-        .poster-details { padding: 8px; text-align: left; }
-        .poster-details h4 { margin: 0; font-size: 12px; color: #fff; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; }
-        .poster-details p { margin: 3px 0 0 0; font-size: 10px; color: var(--text-secondary); }
+        .poster-thumb { width: 100%; height: 150px; object-fit: cover; }
+        .poster-details { padding: 6px; text-align: left; }
+        .poster-details h4 { margin: 0; font-size: 11px; color: #fff; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; }
+        .poster-details p { margin: 2px 0 0 0; font-size: 9px; color: var(--accent-color); }
 
         .loading-shimmer { padding: 30px; text-align: center; color: var(--text-secondary); }
         .loading-shimmer i { font-size: 24px; color: var(--accent-color); animation: spin 1s linear infinite; }
@@ -102,7 +103,7 @@
 </head>
 <body>
 
-    <!-- ১. ওপরে থাকা মেইন ওটিটি ডিসপ্লে স্ক্রিন (ভিডিও প্লেয়ার) -->
+    <!-- ওপরে থাকা মেইন ওটিটি ডিসপ্লে স্ক্রিন -->
     <div class="player-container">
         <video id="kjc-player" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="auto" poster="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgyniKyW9pUz1OKx5bgzLASwGVSuP0e7hX9FxVMTJMHxhu8X0tpucgSplBZgM8pCYrJJH0P2_dTC1-wzp4mMUU4sKnOzghGPCwWdbYOOa4jTyhpr7ydNj-UK-bc56IMsk2H3WZJ-SzSZIk0dTpyABCFR2_zjC2_c86W1pv7odFBT_Y-hyJs62g-3zCJkPGd/s1024/1000398131.png">
             <p class="vjs-no-js">ভিডিও দেখার জন্য ব্রাউজার বা অ্যাপ আপডেট করুন।</p>
@@ -111,7 +112,7 @@
 
     <div class="app-info">
         <h1 id="playing-title">স্বাগতম KJC TV ওটিটি সার্ভারে</h1>
-        <p id="playing-cat">নিচ থেকে যেকোনো চ্যানেল বা নাটক সিলেক্ট করুন</p>
+        <p id="playing-cat">নিচ থেকে যেকোনো চ্যানেল বা মুভি সিলেক্ট করুন</p>
     </div>
 
     <div id="loading" class="loading-shimmer">
@@ -120,72 +121,76 @@
     </div>
 
     <div class="main-scroller" id="main-content" style="display: none;">
-        <!-- এখানে লাইভ টিভি চ্যানেলগুলো অটো লোড হবে -->
+        
+        <!-- লাইভ টিভি চ্যানেলগুলোর অটো জেনারেটেড সেকশন -->
         <div id="dynamic-tv-sections"></div>
 
-        <!-- ২. বিশেষ নাটক সেকশন (এখানে আপনারা নতুন নাটক এড করতে পারবেন) -->
+        <!-- FTP সার্ভার হিন্দি মুভি সেকশন (Netflix লুকে খাড়া পোস্টার) -->
         <div class="category-section">
-            <div class="category-title"><i class="fa-solid fa-clapperboard"></i> বিশেষ নাটক ও বিনোদন 🎭</div>
+            <div class="category-title"><i class="fa-solid fa-film"></i> হিন্দি ব্লকবাস্টার মুভি (FTP Server) 🎬</div>
             <div class="slider">
-                <!-- নাটক ১ -->
-                <div class="poster-card" onclick="playVideo('https://sample-videos.com/video321/mp4/720/big_buck_bunny_720p_1mb.mp4', 'বাংলা নতুন নাটক', 'এইচডি কোয়ালিটি ফুল ড্রামা')">
-                    <img class="poster-thumb" src="https://images.unsplash.com/photo-1594909122845-11baa439b7bf?w=400" alt="Natok">
+                
+                <!-- মুভি ১: Dunki -->
+                <div class="poster-card" onclick="playVideo('https://server3.ftpbd.net/FTP-3/Hindi%20Movies/Dunki%20%282023%29/Dunki.2023.1080p.NF.WEB-DL.DDP5.1.Atmos.H.264-BEN THE MEN.mkv', 'Dunki (2023)', 'হিন্দি মুভি কালেকশন')">
+                    <img class="poster-thumb" src="https://images.justwatch.com/poster/309324545/s332/dunki.webp" alt="Dunki">
                     <div class="poster-details">
-                        <h4>বাংলা নতুন নাটক</h4>
-                        <p>KJC বিশেষ রিলিজ</p>
+                        <h4>Dunki (2023)</h4>
+                        <p>1080p HD</p>
                     </div>
                 </div>
-                <!-- নাটক ২ -->
-                <div class="poster-card" onclick="playVideo('https://sample-videos.com/video321/mp4/720/big_buck_bunny_720p_1mb.mp4', 'শর্ট ফিল্ম কালেকশন', 'কুশারপাড়া বিশেষ নাটক')">
-                    <img class="poster-thumb" src="https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=400" alt="Short Film">
-                    <div class="poster-details">
-                        <h4>শর্ট ফিল্ম কালেকশন</h4>
-                        <p>ঈদ স্পেশাল ২০২৬</p>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <!-- ৩. মুভি ও সিনেমা সেকশন -->
-        <div class="category-section">
-            <div class="category-title"><i class="fa-solid fa-film"></i> ব্লকবাস্টার মুভি কালেকশন 🎬</div>
-            <div class="slider">
-                <div class="poster-card" onclick="playVideo('https://sample-videos.com/video321/mp4/720/big_buck_bunny_720p_1mb.mp4', 'নতুন বাংলা সিনেমা', 'ফুল এইচডি ১০০% ফ্রি')">
-                    <img class="poster-thumb" src="https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=400" alt="Movie">
+                <!-- মুভি ২: Animal -->
+                <div class="poster-card" onclick="playVideo('https://server3.ftpbd.net/FTP-3/Hindi%20Movies/Animal%20%282023%29/Animal.2023.1080p.NF.WEB-DL.DDP5.1.Atmos.H.264-BEN%20THE%20MEN.mkv', 'Animal (2023)', 'হিন্দি মুভি কালেকশন')">
+                    <img class="poster-thumb" src="https://images.justwatch.com/poster/306232230/s332/animal-2023.webp" alt="Animal">
                     <div class="poster-details">
-                        <h4>নতুন বাংলা সিনেমা</h4>
-                        <p>সুপারহিট কালেকশন</p>
+                        <h4>Animal (2023)</h4>
+                        <p>1080p HD</p>
                     </div>
                 </div>
+
+                <!-- মুভি ৩: Jawan -->
+                <div class="poster-card" onclick="playVideo('https://server3.ftpbd.net/FTP-3/Hindi%20Movies/Jawan%20%282023%29/Jawan.2023.Extended.1080p.NF.WEB-DL.DDP5.1.Atmos.H.264-BEN%20THE%20MEN.mkv', 'Jawan (2023)', 'হিন্দি মুভি কালেকশন')">
+                    <img class="poster-thumb" src="https://images.justwatch.com/poster/306195583/s332/jawan.webp" alt="Jawan">
+                    <div class="poster-details">
+                        <h4>Jawan (2023)</h4>
+                        <p>Extended HD</p>
+                    </div>
+                </div>
+
             </div>
         </div>
 
     </div>
 
-    <!-- Video.js and HLS Streaming Scripts -->
+    <!-- Video.js Scripts -->
     <script src="https://vjs.zencdn.net/7.20.3/video.min.js"></script>
     <script>
         const m3uUrl = 'https://raw.githubusercontent.com/kusharparajuniorclub-web/kjctv.github.io/main/playlist.m3u';
         let player;
 
-        // প্লেয়ার ইনিশিয়ালাইজ করা
         document.addEventListener('DOMContentLoaded', () => {
             player = videojs('kjc-player', {
-                html5: { vhs: { overrideNative: true }, nativeAudioTracks: false, nativeVideoTracks: false }
+                html5: { vhs: { overrideNative: true } }
             });
             initOTT();
         });
 
-        // অটোমেটিক ডিসপ্লে স্ক্রিনে ভিডিও প্লে করার ফাংশন
         function playVideo(url, name, category) {
             document.getElementById('playing-title').innerText = name;
             document.getElementById('playing-cat').innerText = category;
             
-            player.src({ src: url, type: url.includes('m3u8') ? 'application/x-mpegURL' : 'video/mp4' });
+            // অটো ডিটেক্ট রানিং ফরম্যাট (m3u8 অথবা mp4/mkv)
+            let type = 'video/mp4';
+            if (url.includes('m3u8')) {
+                type = 'application/x-mpegURL';
+            } else if (url.includes('mkv')) {
+                type = 'video/webm'; // অনেক ব্রাউজার সরাসরি mkv সাপোর্ট করতে ভিডিও এলিমেন্ট কনভার্ট করে
+            }
+            
+            player.src({ src: url, type: type });
             player.ready(() => {
-                player.play().catch(e => console.log("Auto-play blocked, waiting for user click."));
+                player.play().catch(e => console.log("Play blocked, interaction required."));
             });
-            // স্ক্রল করে ওপরে প্লেয়ারে নিয়ে যাওয়া
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
@@ -256,7 +261,6 @@
                         <div class="image-wrapper"><img src="${ch.logo}" onerror="this.src='https://cdn-icons-png.flaticon.com/512/716/716429.png'"></div>
                         <p>${ch.name}</p>
                     `;
-                    // ক্লিক লজিক: অন্য কোথাও যাবে না, উপরে প্লে হবে
                     card.onclick = () => playVideo(ch.url, ch.name, catName);
                     slider.appendChild(card);
                 });
