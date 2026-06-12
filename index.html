@@ -3,79 +3,263 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KJC TV Live</title>
+    <title>KJC TV OTT</title>
+    <!-- FontAwesome used for slick icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { background-color: #0d131a; color: white; font-family: Arial, sans-serif; margin: 0; padding: 10px; }
-        h2 { text-align: center; color: #3498db; font-size: 20px; margin-bottom: 20px; }
-        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 5px; }
-        .card { background: #1a2332; border-radius: 12px; padding: 15px; text-align: center; cursor: pointer; border: 1px solid #24344d; transition: 0.2s; }
-        .card:active { background: #24344d; }
-        .card img { width: 70px; height: 70px; object-fit: contain; border-radius: 8px; background: #fff; padding: 2px; }
-        .card p { margin: 10px 0 0 0; font-size: 14px; font-weight: bold; color: #f1f2f6; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; }
+        :root {
+            --bg-color: #090e17;
+            --card-bg: #151f32;
+            --accent-color: #00ffcc;
+            --text-color: #ffffff;
+            --text-secondary: #8a9bb4;
+        }
+        body { 
+            background-color: var(--bg-color); 
+            color: var(--text-color); 
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+            margin: 0; 
+            padding: 0;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        header {
+            background: linear-gradient(to bottom, #0d1726, var(--bg-color));
+            padding: 20px 15px;
+            text-align: left;
+            border-bottom: 1px solid #1a263b;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            background: linear-gradient(45deg, #00ffcc, #00bcff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        header p {
+            margin: 5px 0 0 0;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        .category-section {
+            margin-bottom: 25px;
+            padding-left: 15px;
+        }
+        .category-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #f1f5f9;
+        }
+        .category-title i {
+            color: var(--accent-color);
+            font-size: 14px;
+        }
+        /* Toffee-style horizontal scrolling slider */
+        .slider {
+            display: flex;
+            overflow-x: auto;
+            gap: 14px;
+            padding-bottom: 10px;
+            scroll-behavior: smooth;
+            scrollbar-width: none; /* For Firefox */
+        }
+        .slider::-webkit-scrollbar {
+            display: none; /* For Chrome, Safari, Opera */
+        }
+        .card {
+            flex: 0 0 auto;
+            width: 105px;
+            background: var(--card-bg);
+            border-radius: 14px;
+            padding: 12px 8px;
+            text-align: center;
+            cursor: pointer;
+            border: 1px solid #1e2d4a;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        .card:active {
+            transform: scale(0.95);
+            border-color: var(--accent-color);
+            background: #1c2b45;
+        }
+        .image-wrapper {
+            width: 75px;
+            height: 75px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #ffffff;
+            border-radius: 50%; /* Perfect circle style logo like premium OTTs */
+            overflow: hidden;
+            border: 2px solid #283a56;
+            box-shadow: inset 0 0 8px rgba(0,0,0,0.2);
+        }
+        .card img {
+            width: 80%;
+            height: 80%;
+            object-fit: contain;
+        }
+        .card p {
+            margin: 10px 0 0 0;
+            font-size: 12px;
+            font-weight: 600;
+            color: #e2e8f0;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        /* Shimmer effect while loading data */
+        .loading-shimmer {
+            padding: 50px 20px;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+        .loading-shimmer i {
+            font-size: 28px;
+            color: var(--accent-color);
+            margin-bottom: 10px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
 
-    <h2>📺 লাইভ টিভি চ্যানেল</h2>
-    <div class="grid" id="channel-container"></div>
+    <header>
+        <h1>KJC TV PREMIUM</h1>
+        <p>কুশারপাড়া জুনিয়র ক্লাব ওটিটি সার্ভার</p>
+    </header>
+
+    <div id="loading" class="loading-shimmer">
+        <i class="fa-solid fa-circle-notch"></i>
+        <p>চ্যানেলগুলো টফি সার্ভার থেকে সাজানো হচ্ছে...</p>
+    </div>
+
+    <div id="main-content" style="display: none; padding-top: 15px;">
+        <!-- Categories will generate dynamically here -->
+    </div>
 
     <script>
-        // আপনার গিটহাবের m3u ফাইলের RAW লিংক
         const m3uUrl = 'https://raw.githubusercontent.com/kusharparajuniorclub-web/kjctv.github.io/main/playlist.m3u';
 
-        async function fetchM3U() {
+        async function initOTT() {
             try {
                 const response = await fetch(m3uUrl);
                 const text = await response.text();
-                parseM3U(text);
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('main-content').style.display = 'block';
+                parseAndRender(text);
             } catch (error) {
-                console.error("চ্যানেল লোড করা যায়নি:", error);
+                document.getElementById('loading').innerHTML = '<p style="color:#ef4444;">সার্ভার কানেকশন ব্যর্থ হয়েছে!</p>';
             }
         }
 
-        function parseM3U(data) {
+        function parseAndRender(data) {
             const lines = data.split('\n');
-            const container = document.getElementById('channel-container');
+            const categories = {
+                "Sports Live 🏆": [],
+                "Live News 📰": [],
+                "Entertainment 🎭": [],
+                "Movies & Others 🎬": []
+            };
+
             let currentName = '';
             let currentLogo = '';
+            let currentGroup = '';
 
             for (let i = 0; i < lines.length; i++) {
                 const line = lines[i].trim();
                 
                 if (line.startsWith('#EXTINF:')) {
-                    // নাম খুঁজে বের করা
-                    const nameMatch = line.match(/tvg-name="([^"]+)"/) || line.match(/,(.+)$/);
-                    currentName = nameMatch ? nameMatch[1] : 'Unknown Channel';
+                    // Extracting channel clean name
+                    const nameMatch = line.match(/group-title="([^"]+)"/);
+                    const labelMatch = line.match(/,(.+)$/);
                     
-                    // লোগো খুঁজে বের করা
+                    currentName = labelMatch ? labelMatch[1].trim() : 'Unknown Channel';
+                    
+                    // Extracting channel group/category from m3u
+                    currentGroup = nameMatch ? nameMatch[1].toLowerCase() : '';
+                    
+                    // Extracting channel logo
                     const logoMatch = line.match(/tvg-logo="([^"]+)"/);
-                    currentLogo = logoMatch ? logoMatch[1] : 'https://cdn-icons-png.flaticon.com/512/716/716429.png';
+                    currentLogo = logoMatch ? logoMatch[1] : '';
                 } else if (line.startsWith('http')) {
                     const url = line;
                     
-                    if (currentName) {
-                        const card = document.createElement('div');
-                        card.className = 'card';
-                        card.innerHTML = `
-                            <img src="${currentLogo}" onerror="this.src='https://cdn-icons-png.flaticon.com/512/716/716429.png'">
-                            <p>${currentName}</p>
-                        `;
+                    // Filter out bad, blank or promo channels that break the look
+                    if (currentName && !currentName.includes("Welcome") && !currentName.includes("New App")) {
                         
-                        // ক্লিক করলে সরাসরি অ্যান্ড্রয়েড প্লেয়ারে ভিডিও প্লে হবে
-                        card.onclick = () => {
-                            window.location.href = url;
-                        };
+                        let targetCategory = "Movies & Others 🎬";
                         
-                        container.appendChild(card);
+                        // Smart auto-sorting algorithm based on your m3u list data
+                        if (currentGroup.includes("sports") || currentGroup.includes("bdix") || currentName.toLowerCase().includes("sports") || currentName.toLowerCase().includes("cricket")) {
+                            targetCategory = "Sports Live 🏆";
+                        } else if (currentGroup.includes("news") || currentName.toLowerCase().includes("tv") || currentName.includes("সময়") || currentName.includes("যমুনা")) {
+                            targetCategory = "Live News 📰";
+                        } else if (currentGroup.includes("entertainment") || currentGroup.includes("bangla") || currentGroup.includes("akash") || currentName.includes("Bangla")) {
+                            targetCategory = "Entertainment 🎭";
+                        }
+
+                        categories[targetCategory].push({
+                            name: currentName,
+                            logo: currentLogo || 'https://cdn-icons-png.flaticon.com/512/716/716429.png',
+                            url: url
+                        });
                     }
-                    // রিসেট
-                    currentName = '';
-                    currentLogo = '';
+                    currentName = ''; currentLogo = ''; currentGroup = '';
                 }
+            }
+
+            // Rendering to UI
+            const mainContainer = document.getElementById('main-content');
+            
+            for (const [catName, chList] of Object.entries(categories)) {
+                if (chList.length === 0) continue; // Skip empty groups
+
+                const section = document.createElement('div');
+                section.className = 'category-section';
+                
+                const title = document.createElement('div');
+                title.className = 'category-title';
+                title.innerHTML = `<i class="fa-solid fa-play"></i> ${catName}`;
+                section.appendChild(title);
+
+                const slider = document.createElement('div');
+                slider.className = 'slider';
+
+                chList.forEach(ch => {
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    card.innerHTML = `
+                        <div class="image-wrapper">
+                            <img src="${ch.logo}" onerror="this.src='https://cdn-icons-png.flaticon.com/512/716/716429.png'">
+                        </div>
+                        <p>${ch.name}</p>
+                    `;
+                    card.onclick = () => {
+                        window.location.href = ch.url;
+                    };
+                    slider.appendChild(card);
+                });
+
+                section.appendChild(slider);
+                mainContainer.appendChild(section);
             }
         }
 
-        fetchM3U();
+        initOTT();
     </script>
 </body>
 </html>
